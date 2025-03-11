@@ -20,6 +20,7 @@ fn scalar_data_type() {
     let a: i32 = -100;
     let b: u32 = 354;
 
+    println!("\t-------Basic data types-------");
     println!("Signed integer is {}", a);
     println!("Unsigned integer is {}", b);
 
