@@ -7,6 +7,7 @@ fn compound_data_type(){
     let numbers: [i32; 5] = [1, 2, 3, 4, 5];
     let alphabets: [char; 10] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
-    println!("numbers: {:?}", numbers);
-    println!("alphabets: {:?}", alphabets);
+    println!("\n\t--------Compound data types--------");
+    println!("numbers array: {:?}", numbers);
+    println!("alphabets array: {:?}", alphabets);
 }
