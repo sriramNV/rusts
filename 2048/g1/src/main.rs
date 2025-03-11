@@ -10,13 +10,13 @@ enum Tile{
     Number(u32),
 }
 
-struct Game{
+pub struct Game{
     board: [[Tile: BOARD_SIZE]; BOARD_SIZE],
     game_over: bool,
 }
 
 impl Game{
-    fn new() -> Self {
+    pub fn new() -> Self {
         let mut game = Game {
             board: [[Tile: Empty; BOARD_SIZE]; BOARD_SIZE], game_over: false,
             game_over: false,
