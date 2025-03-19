@@ -1,3 +1,4 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use macroquad::prelude::*;
 use std::env;
@@ -192,6 +193,7 @@ fn reset_game(
 
 
 #[macroquad::main("breakout")]
+
 async fn main() {
     let font_path = if let Ok(current_dir) = std::env::current_dir() {
         // First try the local res directory
