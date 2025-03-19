@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_name: breakout
+            asset_name: breakout-linux-amd64
+          - os: windows-latest
+            artifact_name: breakout.exe
+            asset_name: breakout-windows-amd64
+          - os: macos-latest
+            artifact_name: breakout
+            asset_name: breakout-macos-amd64
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Build
+      run: cargo build --release
+
+    - name: Create release archive
+      shell: bash
+      run: |
+        mkdir release
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          cp target/release/${{ matrix.artifact_name }} release/
+          cp -r res release/
+          cd release
+          7z a -tzip ../${{ matrix.asset_name }}.zip .
+        else
+          cp target/release/${{ matrix.artifact_name }} release/
+          cp -r res release/
+          cd release
+          zip -r ../${{ matrix.asset_name }}.zip .
+        fi
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.asset_name }}
+        path: ${{ matrix.asset_name }}.zip
