@@ -1,11 +1,13 @@
 
 use macroquad::prelude::*;
+use std::env;
 
 const PLAYER_SIZE: Vec2 = Vec2::from_array([150f32, 40f32]);
 const PLAYER_SPEED: f32 = 700f32;
 const BLOCK_SIZE: Vec2 = Vec2::from_array([110f32, 40f32]);
 const BALL_SIZE: f32 = 50f32;
 const BALL_SPEED: f32 = 400f32;
+
 
 #[derive(PartialEq)]
 pub enum BlockType{
@@ -191,7 +193,29 @@ fn reset_game(
 
 #[macroquad::main("breakout")]
 async fn main() {
-    let fontt= load_ttf_font("res/Heebo-VariableFont_wght.ttf").await.unwrap();
+    let font_path = if let Ok(current_dir) = std::env::current_dir() {
+        // First try the local res directory
+        let local_path = current_dir.join("res").join("Heebo-VariableFont_wght.ttf");
+        if local_path.exists() {
+            local_path
+        } else {
+            // Then try the res directory next to the executable
+            let exe_path = std::env::current_exe().unwrap();
+            let exe_dir = exe_path.parent().unwrap();
+            exe_dir.join("res").join("Heebo-VariableFont_wght.ttf")
+        }
+    } else {
+        // Fallback to simple path
+        std::path::PathBuf::from("res/Heebo-VariableFont_wght.ttf")
+    };
+
+    println!("Attempting to load font from: {}", font_path.display());
+    let fontt = load_ttf_font(font_path.to_str().unwrap())
+        .await
+        .expect("Failed to load font file");
+
+
+    
     let mut game_state = GameState::Menu;
     let mut score = 0;
     let mut player_lives = 3;
@@ -214,9 +238,10 @@ async fn main() {
                 }
             },
             GameState::Game => {
-                if is_key_pressed(KeyCode::Space){
-                    balls.push(Ball::new(vec2(screen_width() * 0.5f32, screen_height() * 0.5f32 + 20f32)));
-                }
+                // the below code is for testing purpose
+                // if is_key_pressed(KeyCode::Space){
+                //     balls.push(Ball::new(vec2(screen_width() * 0.5f32, screen_height() * 0.5f32 + 20f32)));
+                // }
 
                 player.update(get_frame_time());
         
