@@ -6,13 +6,15 @@
 // 3. When the owner goes out of scope, the value will be dropped.
 
 
-// Rule 1:  Each value in rust has a variable that is called its owner.
 fn main(){
     let s1 = String::from("hello");
-    let len = calculate_length(&s1);
-    println!("The length of '{}' is {}.", s1, len);
+    let s2 = s1;
+    println!("s2: {}", s2);  // Rule 2:  There can only be one owner at a time. it will throw an error if s1 is printed as the ownership of s1 is transferred to s2
+    let len = calculate_length(&s2);
+    println!("The length of '{}' is {}.", s2, len); // Rule 1:  Each value in rust has a variable that is called its owner.
 }
 
 fn calculate_length(s: &String) -> usize {
     s.len()
 }
+
