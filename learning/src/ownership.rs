@@ -24,6 +24,6 @@ fn calculate_length(s: &String) -> usize {
 }
 
 fn printloss(s: &String) {
-    println!("s: {}", s);
+    println!("s: {}", &s);
 }
 
