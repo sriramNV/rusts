@@ -6,20 +6,29 @@ use winit::{
     window::{Window, WindowId},
 };
 
+use crate::settings::WindowSettings;
+
 pub struct MainWindowApp {
     pub window: Option<Window>,
+    pub settings: WindowSettings,
 }
 
 impl MainWindowApp {
     pub fn new() -> Self {
-        Self { window: None }
+        Self {
+            window: None,
+            settings: WindowSettings::default(),
+        }
     }
 }
 
 impl ApplicationHandler for MainWindowApp {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
-        let attrs = Window::default_attributes().with_title("Window");
+        let attrs = winit::window::Window::default_attributes()
+            .with_title(self.settings.title)
+            .with_inner_size(winit::dpi::PhysicalSize::new(self.settings.width, self.settings.height));
         self.window = Some(event_loop.create_window(attrs).unwrap());
+        // Later you can use settings.font_size, theme, etc for UI rendering
     }
 
     fn window_event(

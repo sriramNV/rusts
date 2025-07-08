@@ -1,5 +1,5 @@
-// src/main.rs
 mod main_window;
+mod settings;
 
 use main_window::MainWindowApp;
 use winit::event_loop::EventLoop;
